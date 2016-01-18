@@ -54,7 +54,7 @@
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="btnNovo" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnNovoNovo" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnAtualizar" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -104,7 +104,7 @@
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="btnNovo" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnNovoNovo" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnAtualizar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnVoltar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -169,12 +169,12 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLimparActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="btnNovo">
+    <Component class="javax.swing.JButton" name="btnNovoNovo">
       <Properties>
         <Property name="text" type="java.lang.String" value="Novo"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNovoActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNovoNovoActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnAtualizar">

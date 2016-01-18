@@ -54,7 +54,7 @@ public class MedicoForm extends javax.swing.JFrame {
         cmbEspecialidade = new javax.swing.JComboBox();
         btnBuscar = new javax.swing.JButton();
         btnLimpar = new javax.swing.JButton();
-        btnNovo = new javax.swing.JButton();
+        btnNovoNovo = new javax.swing.JButton();
         btnAtualizar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblMedico = new javax.swing.JTable();
@@ -94,10 +94,10 @@ public class MedicoForm extends javax.swing.JFrame {
             }
         });
 
-        btnNovo.setText("Novo");
-        btnNovo.addActionListener(new java.awt.event.ActionListener() {
+        btnNovoNovo.setText("Novo");
+        btnNovoNovo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnNovoActionPerformed(evt);
+                btnNovoNovoActionPerformed(evt);
             }
         });
 
@@ -151,7 +151,7 @@ public class MedicoForm extends javax.swing.JFrame {
                         .addComponent(txtCpf, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(btnNovo)
+                        .addComponent(btnNovoNovo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnAtualizar)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -191,7 +191,7 @@ public class MedicoForm extends javax.swing.JFrame {
                         .addComponent(lblNome)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnNovo)
+                    .addComponent(btnNovoNovo)
                     .addComponent(btnAtualizar)
                     .addComponent(btnVoltar)
                     .addComponent(jButton1))
@@ -204,10 +204,10 @@ public class MedicoForm extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+    private void btnNovoNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoNovoActionPerformed
         NovoMedicoForm novoMedicoForm = new NovoMedicoForm();
         novoMedicoForm.setVisible(true);
-    }//GEN-LAST:event_btnNovoActionPerformed
+    }//GEN-LAST:event_btnNovoNovoActionPerformed
 
     private void btnAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtualizarActionPerformed
         carregarTabela();
@@ -297,7 +297,7 @@ public class MedicoForm extends javax.swing.JFrame {
     private javax.swing.JButton btnAtualizar;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnLimpar;
-    private javax.swing.JButton btnNovo;
+    private javax.swing.JButton btnNovoNovo;
     private javax.swing.JButton btnVoltar;
     private javax.swing.JComboBox cmbEspecialidade;
     private javax.swing.JButton jButton1;
