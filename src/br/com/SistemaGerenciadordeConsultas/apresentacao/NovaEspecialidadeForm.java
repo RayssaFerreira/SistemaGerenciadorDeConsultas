@@ -9,6 +9,8 @@ import br.com.SistemaGerenciadordeConsultas.entidade.Especialidade;
 import br.com.SistemaGerenciadordeConsultas.excecao.CampoObrigatorioException;
 import br.com.SistemaGerenciadordeConsultas.negocio.EspecialidadeBO;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -102,10 +104,10 @@ public class NovaEspecialidadeForm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Cadastro Realizado com Sucesso!", "Sucesso!", JOptionPane.INFORMATION_MESSAGE);
             txtNome.setText("");
         } catch (CampoObrigatorioException e) {
-            JOptionPane.showMessageDialog(this, "Preencha Todos os Campos!", "Erro!", JOptionPane.ERROR_MESSAGE);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+            JOptionPane.showMessageDialog(this, "Preencha Todos os Campos para Cadastar Especilidade!", "Erro!", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException ex) {
+            Logger.getLogger(NovaEspecialidadeForm.class.getName()).log(Level.SEVERE, null, ex);
+        } 
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed

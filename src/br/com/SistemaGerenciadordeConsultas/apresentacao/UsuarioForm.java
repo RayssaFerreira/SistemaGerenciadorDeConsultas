@@ -9,6 +9,9 @@ import br.com.SistemaGerenciadordeConsultas.entidade.Usuario;
 import br.com.SistemaGerenciadordeConsultas.negocio.UsuarioBO;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -21,6 +24,7 @@ public class UsuarioForm extends javax.swing.JFrame {
      * Creates new form UsuarioForm
      */
     private List<Usuario> usuarios;
+    private AlterarUsuarioForm alterarUsuarioForm;
 
     public UsuarioForm() {
         initComponents();
@@ -38,11 +42,11 @@ public class UsuarioForm extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tblUsuario = new javax.swing.JTable();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        btnNovo = new javax.swing.JButton();
+        btnAtualizar = new javax.swing.JButton();
+        btnVoltar = new javax.swing.JButton();
+        btnExcluir = new javax.swing.JButton();
+        btnAlterar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("USUÁRIOS");
@@ -60,38 +64,38 @@ public class UsuarioForm extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblUsuario);
 
-        jButton3.setText("Novo");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnNovo.setText("Novo");
+        btnNovo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnNovoActionPerformed(evt);
             }
         });
 
-        jButton4.setText("Atualizar");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        btnAtualizar.setText("Atualizar");
+        btnAtualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btnAtualizarActionPerformed(evt);
             }
         });
 
-        jButton1.setText("Voltar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnVoltar.setText("Voltar");
+        btnVoltar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnVoltarActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Excluir");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnExcluirActionPerformed(evt);
             }
         });
 
-        jButton5.setText("Alterar");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        btnAlterar.setText("Alterar");
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                btnAlterarActionPerformed(evt);
             }
         });
 
@@ -100,15 +104,15 @@ public class UsuarioForm extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jButton3)
-                .addGap(31, 31, 31)
-                .addComponent(jButton4)
-                .addGap(42, 42, 42)
-                .addComponent(jButton2)
-                .addGap(56, 56, 56)
-                .addComponent(jButton5)
-                .addGap(56, 56, 56)
-                .addComponent(jButton1)
+                .addComponent(btnNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnAtualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 839, Short.MAX_VALUE)
         );
@@ -117,11 +121,11 @@ public class UsuarioForm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton5))
+                    .addComponent(btnNovo)
+                    .addComponent(btnAtualizar)
+                    .addComponent(btnVoltar)
+                    .addComponent(btnAlterar)
+                    .addComponent(btnExcluir))
                 .addGap(16, 16, 16)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -131,30 +135,60 @@ public class UsuarioForm extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
         NovoUsuarioForm form = new NovoUsuarioForm();
         form.setVisible(true);
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_btnNovoActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void btnAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtualizarActionPerformed
         carregarTabela();
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_btnAtualizarActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
         this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnVoltarActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        try {
+            this.excluirUsuario();
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+         /*try { 
+            this.editarUsuario();
+            alterarUsuarioForm.setStatus(1);
+        } catch (SQLException ex) {
+            Logger.getLogger(AlterarUsuarioForm.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
-        AlterarUsuarioForm alteraUsuario = new AlterarUsuarioForm();
-        alteraUsuario.setVisible(true);
-       
-    }//GEN-LAST:event_jButton5ActionPerformed
+    }//GEN-LAST:event_btnAlterarActionPerformed
+    /*private void editarUsuario() throws SQLException {
 
+        int linhaSelecionada = tblUsuario.getSelectedRow();
+
+        if (linhaSelecionada != -1) {
+            Usuario usuarioSelecionado = usuarios.get(linhaSelecionada);
+
+            if (alterarUsuarioForm != null) {
+                alterarUsuarioForm.dispose();
+            }
+
+            alterarUsuarioForm = new AlterarUsuarioForm(this, usuarioSelecionado);
+            alterarUsuarioForm.setVisible(true);
+
+        } else {
+            String mensagem = "Nenhum usuario selecionado.";
+            JOptionPane.showMessageDialog(this,
+                    mensagem,
+                    "Edição de usuário",
+                    JOptionPane.INFORMATION_MESSAGE);
+        }
+
+    }*/
     /**
      * @param args the command line arguments
      */
@@ -191,11 +225,11 @@ public class UsuarioForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton btnAlterar;
+    private javax.swing.JButton btnAtualizar;
+    private javax.swing.JButton btnExcluir;
+    private javax.swing.JButton btnNovo;
+    private javax.swing.JButton btnVoltar;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblUsuario;
     // End of variables declaration//GEN-END:variables
@@ -209,6 +243,39 @@ public class UsuarioForm extends javax.swing.JFrame {
         }
         Model model = new Model();
         this.tblUsuario.setModel(model);
+    }
+
+    private void excluirUsuario() throws SQLException {
+
+        try {
+            int linhaSelecionada = tblUsuario.getSelectedRow();
+            if (linhaSelecionada != -1) {
+                Usuario usuarioSelecionado = usuarios.get(linhaSelecionada);
+
+                int resposta;
+                String mensagem = "Deseja excluir usuário? " + usuarioSelecionado.getLogin();
+                String titulo = "Exclusão de Usuário";
+                resposta = JOptionPane.showConfirmDialog(this, mensagem, titulo, JOptionPane.YES_NO_OPTION);
+
+                if (resposta == JOptionPane.YES_NO_OPTION) {
+                    UsuarioBO usuarioBo = new UsuarioBO();
+                    usuarioBo.removerUsuario(usuarioSelecionado.getId());
+                    mensagem = "Usuário" + usuarioSelecionado.getLogin() + " Apagado com sucesso!";
+                    JOptionPane.showMessageDialog(this, mensagem, "Exclusão de Usuário", JOptionPane.INFORMATION_MESSAGE);
+                    this.carregarTabela();
+                }
+
+            } else {
+                String mensagem = "Nenhum usuário selecionado.";
+                JOptionPane.showMessageDialog(this, mensagem, "Exclusão de usuário", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception e) {
+            String mensagem = "Erro inesperado! Informe a mensagem de erro ao administrador do sistema.";
+            mensagem += "\nMensagem de erro:\n" + e.getMessage();
+            JOptionPane.showMessageDialog(this, mensagem, "Exclusão de Usuário ", JOptionPane.ERROR_MESSAGE);
+            this.dispose();
+
+        }
     }
 
     private class Model extends AbstractTableModel {

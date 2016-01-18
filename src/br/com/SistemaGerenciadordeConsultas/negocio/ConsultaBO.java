@@ -46,4 +46,8 @@ public class ConsultaBO {
         ConsultaDAO consultaDAO = new ConsultaDAO();
         return consultaDAO.buscarConsultasPorDia();
     }
+    public void removerConsulta(int id) throws SQLException {
+        ConsultaDAO consultaDAO = new ConsultaDAO();
+        consultaDAO.removerConsulta(id);
+    }
 }

@@ -17,7 +17,7 @@ import java.util.List;
  * @author Rayssa
  */
 public class UsuarioBO {
-
+   
     public List<Usuario> buscarTodos() throws SQLException {
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         return usuarioDAO.buscarTodos();
@@ -47,6 +47,11 @@ public class UsuarioBO {
         if (!usuarioDAO.login(usuario)) {
             throw new LoginInvalidoException();
         }
+    }
+
+    public void removerUsuario(int id) throws SQLException {
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        usuarioDAO.removerUsuario(id);
     }
 
 }

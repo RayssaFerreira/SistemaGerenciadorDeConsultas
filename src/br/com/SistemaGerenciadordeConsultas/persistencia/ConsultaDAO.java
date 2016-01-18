@@ -26,7 +26,7 @@ public class ConsultaDAO {
     private static final String SQL_UPDATE = "UPDATE CONSEULTA SET DATA=?, HORARIO=?, MEDICO=?, PACIENTE=?, OBSERVACAO=? WHERE ID=?";
     private static final String SQL_BUSCA_TODOS = "SELECT * FROM CONSULTA ORDER BY DATA,HORARIO DESC";
     private static final String SQL_BUSCA_CONSULTA_GROUP_DIA = "SELECT COUNT(*), DATA FROM CONSULTA GROUP BY DATA ORDER BY DATA DESC";
-    
+    private static final String SQL_REMOVER_CONSULTA = "DELETE FROM CONSULTA WHERE ID = ?";
     public void criar(Consulta consulta) throws SQLException {
         PreparedStatement comando = null;
         Connection conexao = null;
@@ -84,6 +84,34 @@ public class ConsultaDAO {
                 conexao.close();
             }
         }
+    }
+     public void removerConsulta(int id) throws SQLException {
+        Connection conexao = null;
+        PreparedStatement comando = null;
+        ///id = 4;
+        try {
+            //Recupera a conexão
+            conexao = BancoDadosUtil.getConnection();
+            //Cria o comando de inserir dados
+            comando = conexao.prepareStatement(SQL_REMOVER_CONSULTA);
+            //Atribui os parâmetros (Note que no BD o index inicia por 1)
+            comando.setInt(1, id);
+            //Executa o comando
+            comando.execute();
+            //Persiste o comando no banco de dados
+            conexao.commit();
+        } catch (Exception e) {
+            //Caso aconteça alguma exeção é feito um rollback para o banco de
+            //dados retornar ao seu estado anterior.
+            if (conexao != null) {
+                conexao.rollback();
+            }
+            throw e;
+        } finally {
+            //Todo objeto que referencie o banco de dados deve ser fechado
+            BancoDadosUtil.fecharChamadasBancoDados(conexao, comando);
+        } 
+    
     }
 
     public List<Consulta> buscarTodos() throws SQLException {

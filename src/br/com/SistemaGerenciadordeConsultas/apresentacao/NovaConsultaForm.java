@@ -8,12 +8,15 @@ package br.com.SistemaGerenciadordeConsultas.apresentacao;
 import br.com.SistemaGerenciadordeConsultas.entidade.Consulta;
 import br.com.SistemaGerenciadordeConsultas.entidade.Medico;
 import br.com.SistemaGerenciadordeConsultas.entidade.Paciente;
+import br.com.SistemaGerenciadordeConsultas.excecao.CampoObrigatorioException;
 import br.com.SistemaGerenciadordeConsultas.negocio.ConsultaBO;
 import br.com.SistemaGerenciadordeConsultas.negocio.ConverteData;
 import br.com.SistemaGerenciadordeConsultas.negocio.MedicoBO;
 import br.com.SistemaGerenciadordeConsultas.negocio.PacienteBO;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
@@ -56,9 +59,9 @@ public class NovaConsultaForm extends javax.swing.JFrame {
         cmbPaciente = new javax.swing.JComboBox();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtObservacao = new javax.swing.JTextArea();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        btnSalvar = new javax.swing.JButton();
+        btnVoltar = new javax.swing.JButton();
+        imagemAgenda = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("AGENDAR CONSULTAS");
@@ -98,21 +101,21 @@ public class NovaConsultaForm extends javax.swing.JFrame {
         txtObservacao.setRows(5);
         jScrollPane1.setViewportView(txtObservacao);
 
-        jButton1.setText("Salvar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnSalvar.setText("Salvar");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnSalvarActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Voltar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnVoltar.setText("Voltar");
+        btnVoltar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnVoltarActionPerformed(evt);
             }
         });
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/SistemaGerenciadordeConsultas/apresentacao/icones/agendamedica.png"))); // NOI18N
+        imagemAgenda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/SistemaGerenciadordeConsultas/apresentacao/icones/agendamedica.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -120,9 +123,9 @@ public class NovaConsultaForm extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(105, 105, 105)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(150, 150, 150)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(19, 19, 19)
@@ -144,7 +147,7 @@ public class NovaConsultaForm extends javax.swing.JFrame {
                             .addComponent(cmbPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(119, 119, 119)
-                        .addComponent(jLabel1)))
+                        .addComponent(imagemAgenda)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -172,11 +175,11 @@ public class NovaConsultaForm extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblObservacao)))
-                    .addComponent(jLabel1))
+                    .addComponent(imagemAgenda))
                 .addGap(102, 102, 102)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(btnSalvar)
+                    .addComponent(btnVoltar))
                 .addContainerGap(31, Short.MAX_VALUE))
         );
 
@@ -184,34 +187,49 @@ public class NovaConsultaForm extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
         this.dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        //Recupera Campos Tela
+    }//GEN-LAST:event_btnVoltarActionPerformed
+    public void validaCampos() throws CampoObrigatorioException {
         String data = txtData.getText().trim();
         String horario = txtHorario.getText().trim();
         String observacao = txtObservacao.getText().trim();
-        Consulta consulta = new Consulta();
-        consulta.setMedico((Medico) cmbMedico.getSelectedItem());
-        consulta.setPaciente((Paciente) cmbPaciente.getSelectedItem());
-        consulta.setObservacao(observacao);
-        try {
-            consulta.setData(ConverteData.StringForDate(data));
-            consulta.setHorario(ConverteData.StringForTime(horario));
-            ConsultaBO consultaBO = new ConsultaBO();
-            consultaBO.salvar(consulta);
-            JOptionPane.showMessageDialog(this, "Consulta Agendada Sucesso!", "Sucesso!", JOptionPane.INFORMATION_MESSAGE);
-            this.limparCamposTela();
-            carregarCmbMedico();
-            carregarCmbPaciente();
-        } catch (ParseException e) {
-            JOptionPane.showMessageDialog(this, "Data ou Horário Inválida!", "Erro!", JOptionPane.ERROR_MESSAGE);
-        } catch (SQLException e) {
-            e.printStackTrace();
+
+        if (data.isEmpty() || horario.isEmpty() || observacao.isEmpty()) {
+            throw new CampoObrigatorioException("Preencha Todos os Campos para Agendar Consulta!");
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+
+        try {
+            this.validaCampos();
+            //Recupera Campos Tela
+            String data = txtData.getText().trim();
+            String horario = txtHorario.getText().trim();
+            String observacao = txtObservacao.getText().trim();
+            Consulta consulta = new Consulta();
+            consulta.setMedico((Medico) cmbMedico.getSelectedItem());
+            consulta.setPaciente((Paciente) cmbPaciente.getSelectedItem());
+            consulta.setObservacao(observacao);
+
+            try {
+                consulta.setData(ConverteData.StringForDate(data));
+                consulta.setHorario(ConverteData.StringForTime(horario));
+                ConsultaBO consultaBO = new ConsultaBO();
+                consultaBO.salvar(consulta);
+                JOptionPane.showMessageDialog(this, "Consulta Agendada Sucesso!", "Sucesso!", JOptionPane.INFORMATION_MESSAGE);
+                this.limparCamposTela();
+                carregarCmbMedico();
+                carregarCmbPaciente();
+            } catch (ParseException e) {
+                JOptionPane.showMessageDialog(this, "Data ou Horário Inválida!", "Erro!", JOptionPane.ERROR_MESSAGE);
+            } catch (SQLException ex) {
+                Logger.getLogger(NovaConsultaForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (CampoObrigatorioException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnSalvarActionPerformed
     public void limparCamposTela() {
         txtData.setText("");
         txtHorario.setText("");
@@ -257,11 +275,11 @@ public class NovaConsultaForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnSalvar;
+    private javax.swing.JButton btnVoltar;
     private javax.swing.JComboBox cmbMedico;
     private javax.swing.JComboBox cmbPaciente;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel imagemAgenda;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblData;
     private javax.swing.JLabel lblHorario;
