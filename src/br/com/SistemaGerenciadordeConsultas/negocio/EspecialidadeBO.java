@@ -7,6 +7,7 @@ package br.com.SistemaGerenciadordeConsultas.negocio;
 
 import br.com.SistemaGerenciadordeConsultas.entidade.Especialidade;
 import br.com.SistemaGerenciadordeConsultas.excecao.CampoObrigatorioException;
+import br.com.SistemaGerenciadordeConsultas.excecao.DadosInvalidoException;
 import br.com.SistemaGerenciadordeConsultas.persistencia.EspecialidadeDAO;
 import java.sql.SQLException;
 import java.util.List;
@@ -22,10 +23,13 @@ public class EspecialidadeBO {
         return especialidadeDAO.buscarTodos();
     }
 
-    public void salvar(Especialidade especialidade) throws SQLException, CampoObrigatorioException {
+    public void salvar(Especialidade especialidade) throws SQLException, CampoObrigatorioException, DadosInvalidoException {
         EspecialidadeDAO especialidadeDAO = new EspecialidadeDAO();
         if (especialidade.getNome().isEmpty()) {
             throw new CampoObrigatorioException();
+        }
+        if (!especialidadeDAO.validar(especialidade)) {
+            throw new DadosInvalidoException();
         }
         especialidadeDAO.criar(especialidade);
     }

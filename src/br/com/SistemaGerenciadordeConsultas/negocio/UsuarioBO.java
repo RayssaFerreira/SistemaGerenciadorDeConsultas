@@ -7,6 +7,7 @@ package br.com.SistemaGerenciadordeConsultas.negocio;
 
 import br.com.SistemaGerenciadordeConsultas.entidade.Usuario;
 import br.com.SistemaGerenciadordeConsultas.excecao.CampoObrigatorioException;
+import br.com.SistemaGerenciadordeConsultas.excecao.DadosInvalidoException;
 import br.com.SistemaGerenciadordeConsultas.excecao.LoginInvalidoException;
 import br.com.SistemaGerenciadordeConsultas.persistencia.UsuarioDAO;
 import java.sql.SQLException;
@@ -17,16 +18,19 @@ import java.util.List;
  * @author Rayssa
  */
 public class UsuarioBO {
-   
+
     public List<Usuario> buscarTodos() throws SQLException {
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         return usuarioDAO.buscarTodos();
     }
 
-    public void salvar(Usuario usuario) throws SQLException, CampoObrigatorioException {
+    public void salvar(Usuario usuario) throws SQLException, CampoObrigatorioException, DadosInvalidoException {
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         if (usuario.getLogin().isEmpty() || usuario.getSenha().isEmpty()) {
             throw new CampoObrigatorioException();
+        }
+        if (!usuarioDAO.validar(usuario)) {
+            throw new DadosInvalidoException();
         }
         usuarioDAO.criar(usuario);
     }

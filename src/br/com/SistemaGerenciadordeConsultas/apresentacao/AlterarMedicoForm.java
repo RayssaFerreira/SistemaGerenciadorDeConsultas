@@ -5,6 +5,17 @@
  */
 package br.com.SistemaGerenciadordeConsultas.apresentacao;
 
+import br.com.SistemaGerenciadordeConsultas.entidade.Especialidade;
+import br.com.SistemaGerenciadordeConsultas.entidade.Medico;
+import br.com.SistemaGerenciadordeConsultas.excecao.CampoObrigatorioException;
+import br.com.SistemaGerenciadordeConsultas.negocio.EspecialidadeBO;
+import br.com.SistemaGerenciadordeConsultas.negocio.MedicoBO;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Rayssa
@@ -14,8 +25,26 @@ public class AlterarMedicoForm extends javax.swing.JFrame {
     /**
      * Creates new form AlterarMedicoForm
      */
-    public AlterarMedicoForm() {
+    private Medico medico;
+
+    public AlterarMedicoForm(Medico medico) {
         initComponents();
+        this.medico = medico;
+        txtNome.setText(medico.getNome());
+        txtCpf.setText(medico.getCpf());
+        txtCrm.setText(medico.getCrm());
+        txtTelefone.setText(medico.getTelefone());
+        txtEndereco.setText(medico.getEndereco());
+        if (medico.getSexo().equals("F")) {
+            rdoF.setSelected(true);
+        } else {
+            rdoM.setSelected(true);
+        }
+        try {
+            carregarCmb();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -27,6 +56,7 @@ public class AlterarMedicoForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        rgbSexo = new javax.swing.ButtonGroup();
         jLabel8 = new javax.swing.JLabel();
         lblNome = new javax.swing.JLabel();
         lblCpf = new javax.swing.JLabel();
@@ -90,11 +120,18 @@ public class AlterarMedicoForm extends javax.swing.JFrame {
             ex.printStackTrace();
         }
 
+        rgbSexo.add(rdoF);
         rdoF.setText("F");
 
+        rgbSexo.add(rdoM);
         rdoM.setText("M");
 
         btnSalvar.setText("Salvar");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -199,40 +236,39 @@ public class AlterarMedicoForm extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AlterarMedicoForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AlterarMedicoForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AlterarMedicoForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AlterarMedicoForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        //Recupera Campos Tela
+        String nome = txtNome.getText().trim();
+        String cpf = txtCpf.getText().trim();
+        String crm = txtCrm.getText().trim();
+        Especialidade especialidade = (Especialidade) cmbEspecialidade.getSelectedItem();
+        String telefone = txtTelefone.getText().trim();
+        String endereco = txtEndereco.getText().trim();
+        String sexo = "";
+        if (rdoF.isSelected()) {
+            sexo = "F";
+        } else if (rdoM.isSelected()) {
+            sexo = "M";
         }
-        //</editor-fold>
+        medico.setNome(nome);
+        medico.setCpf(cpf);
+        medico.setCrm(crm);
+        medico.setEspecialidade(especialidade);
+        medico.setTelefone(telefone);
+        medico.setEndereco(endereco);
+        medico.setSexo(sexo);
+        try {
+            MedicoBO medicoBO = new MedicoBO();
+            medicoBO.editar(medico);
+            JOptionPane.showMessageDialog(this, "Médico Alterado com Sucesso!", "Sucesso!", JOptionPane.INFORMATION_MESSAGE);
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AlterarMedicoForm().setVisible(true);
-            }
-        });
-    }
+        } catch (CampoObrigatorioException e) {
+            JOptionPane.showMessageDialog(this, "\"Preencha Todos os Campos para Cadastar Médico!\"!", "Erro!", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException ex) {
+            Logger.getLogger(NovoMedicoForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnSalvarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
@@ -248,10 +284,21 @@ public class AlterarMedicoForm extends javax.swing.JFrame {
     private javax.swing.JLabel lblTelefone;
     private javax.swing.JRadioButton rdoF;
     private javax.swing.JRadioButton rdoM;
+    private javax.swing.ButtonGroup rgbSexo;
     private javax.swing.JFormattedTextField txtCpf;
     private javax.swing.JFormattedTextField txtCrm;
     private javax.swing.JTextField txtEndereco;
     private javax.swing.JTextField txtNome;
     private javax.swing.JFormattedTextField txtTelefone;
     // End of variables declaration//GEN-END:variables
+
+    private void carregarCmb() throws SQLException {
+        EspecialidadeBO especialidadeBO = new EspecialidadeBO();
+        DefaultComboBoxModel model = (DefaultComboBoxModel) cmbEspecialidade.getModel();
+        model.removeAllElements();
+        model.addElement(medico.getEspecialidade());
+        for (Especialidade especialidade : especialidadeBO.buscarTodos()) {
+            model.addElement(especialidade);
+        }
+    }
 }

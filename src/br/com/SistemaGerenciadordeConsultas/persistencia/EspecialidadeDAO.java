@@ -6,6 +6,7 @@
 package br.com.SistemaGerenciadordeConsultas.persistencia;
 
 import br.com.SistemaGerenciadordeConsultas.entidade.Especialidade;
+import br.com.SistemaGerenciadordeConsultas.entidade.Usuario;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,6 +23,27 @@ public class EspecialidadeDAO {
     private static final String SQL_INSERT = "INSERT INTO ESPECIALIDADE(NOME) VALUES(?)";
     private static final String SQL_UPDATE = "UPDATE ESPECIALIDADE SET NOME=? WHERE ID=?";
     private static final String SQL_BUSCA_TODOS = "SELECT * FROM ESPECIALIDADE ORDER BY NOME";
+    private static final String SQL_VALIDAR = "SELECT * FROM ESPECIALIDADE WHERE NOME=?";
+
+    public boolean validar(Especialidade especialidade) {
+        PreparedStatement comando = null;
+        Connection conexao = null;
+        ResultSet resultado = null;
+        try {
+            conexao = BancoDadosUtil.getConnection();
+            comando = conexao.prepareStatement(SQL_VALIDAR);
+            comando.setString(1, especialidade.getNome());
+
+            resultado = comando.executeQuery();
+            if (resultado.next()) {
+                return false;
+            } else {
+                return true;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
     public void criar(Especialidade especialidade) throws SQLException {
         PreparedStatement comando = null;

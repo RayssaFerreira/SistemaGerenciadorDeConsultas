@@ -7,6 +7,7 @@ package br.com.SistemaGerenciadordeConsultas.apresentacao;
 
 import br.com.SistemaGerenciadordeConsultas.entidade.Usuario;
 import br.com.SistemaGerenciadordeConsultas.excecao.CampoObrigatorioException;
+import br.com.SistemaGerenciadordeConsultas.excecao.DadosInvalidoException;
 import br.com.SistemaGerenciadordeConsultas.negocio.UsuarioBO;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
@@ -143,17 +144,20 @@ public class NovoUsuarioForm extends javax.swing.JFrame {
             UsuarioBO usuarioBO = new UsuarioBO();
             usuarioBO.salvar(usuario);
             JOptionPane.showMessageDialog(this, "Usuário Cadastrado com Sucesso!", "Sucesso!", JOptionPane.INFORMATION_MESSAGE);
-          this.limparCamposTela();
+            this.limparCamposTela();
         } catch (CampoObrigatorioException e) {
             JOptionPane.showMessageDialog(this, "Preencha Todos os Campos para Cadastar Usuário!", "Erro!", JOptionPane.ERROR_MESSAGE);
+        } catch (DadosInvalidoException e) {
+            JOptionPane.showMessageDialog(this, "Dados Inválido!", "Erro!", JOptionPane.ERROR_MESSAGE);
         } catch (SQLException ex) {
             Logger.getLogger(NovoUsuarioForm.class.getName()).log(Level.SEVERE, null, ex);
-        }  
+        }
     }//GEN-LAST:event_btnSalvarActionPerformed
- public void limparCamposTela() {
+    public void limparCamposTela() {
         txtLogin.setText("");
         txtSenha.setText("");
     }
+
     /**
      * @param args the command line arguments
      */

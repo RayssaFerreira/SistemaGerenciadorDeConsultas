@@ -11,7 +11,10 @@ import br.com.SistemaGerenciadordeConsultas.negocio.EspecialidadeBO;
 import br.com.SistemaGerenciadordeConsultas.negocio.MedicoBO;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -151,7 +154,7 @@ public class MedicoForm extends javax.swing.JFrame {
                         .addComponent(lblNome)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
                         .addComponent(lblEspecialidade)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cmbEspecialidade, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -195,7 +198,7 @@ public class MedicoForm extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        setSize(new java.awt.Dimension(888, 546));
+        setSize(new java.awt.Dimension(1017, 546));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -248,9 +251,32 @@ public class MedicoForm extends javax.swing.JFrame {
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
         // TODO add your handling code here:
-        AlterarMedicoForm alteraMedico = new AlterarMedicoForm();
-        alteraMedico.setVisible(true);
+        try {
+            this.editarMedico();
+        } catch (SQLException ex) {
+            Logger.getLogger(AlterarUsuarioForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnAlterarActionPerformed
+
+    private void editarMedico() throws SQLException {
+
+        int linhaSelecionada = tblMedico.getSelectedRow();
+
+        if (linhaSelecionada != -1) {
+            Medico medico = medicos.get(linhaSelecionada);
+
+            AlterarMedicoForm alterarMedicoForm = new AlterarMedicoForm(medico);
+            alterarMedicoForm.setVisible(true);
+
+        } else {
+            String mensagem = "Nenhum Médico selecionado.";
+            JOptionPane.showMessageDialog(this,
+                    mensagem,
+                    "Edição de Médico",
+                    JOptionPane.INFORMATION_MESSAGE);
+        }
+
+    }
 
     /**
      * @param args the command line arguments

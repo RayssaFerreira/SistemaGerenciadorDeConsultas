@@ -5,6 +5,8 @@
  */
 package br.com.SistemaGerenciadordeConsultas.apresentacao;
 
+import br.com.SistemaGerenciadordeConsultas.entidade.Especialidade;
+import br.com.SistemaGerenciadordeConsultas.entidade.Medico;
 import br.com.SistemaGerenciadordeConsultas.entidade.Paciente;
 import br.com.SistemaGerenciadordeConsultas.negocio.ConverteData;
 import br.com.SistemaGerenciadordeConsultas.negocio.PacienteBO;
@@ -171,19 +173,30 @@ public class PacienteForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-                   
 
-         
+        filtro = new Paciente();
+        String cpf = txtCpf.getText().trim();
+        filtro.setCpf(cpf);
+        carregarTabela();
+
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
-        // TODO add your handling code here:
+        txtCpf.setText("");
+        filtro = null;
+        carregarTabela();
     }//GEN-LAST:event_btnLimparActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
         // TODO add your handling code here:
-        AlterarPacienteForm alteraPaciente = new AlterarPacienteForm();
-        alteraPaciente.setVisible(true);
+        try {
+            int id = tblPaciente.getSelectedRow();
+            PacienteBO pacienteBO = new PacienteBO();
+            AlterarPacienteForm alteraPaciente = new AlterarPacienteForm(pacienteBO.buscarTodos().get(id));
+            alteraPaciente.setVisible(true);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     /**
@@ -236,7 +249,12 @@ public class PacienteForm extends javax.swing.JFrame {
     private void carregarTabela() {
         PacienteBO pacienteBO = new PacienteBO();
         try {
-            this.pacientes = pacienteBO.buscarTodos();
+            if (filtro == null) {
+                this.pacientes = pacienteBO.buscarTodos();
+            } else {
+                this.pacientes = pacienteBO.buscarTodosCpf(filtro);
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

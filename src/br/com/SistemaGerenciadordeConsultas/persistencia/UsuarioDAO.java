@@ -24,6 +24,27 @@ public class UsuarioDAO {
     private static final String SQL_LOGIN = "SELECT * FROM USUARIO WHERE LOGIN=? AND SENHA=?";
     private static final String SQL_BUSCA_TODOS = "SELECT * FROM USUARIO";
     private static final String SQL_REMOVER_USUARIO = "DELETE FROM USUARIO WHERE ID = ?";
+    private static final String SQL_VALIDAR = "SELECT * FROM USUARIO WHERE LOGIN=?";
+
+    public boolean validar(Usuario usuario) {
+        PreparedStatement comando = null;
+        Connection conexao = null;
+        ResultSet resultado = null;
+        try {
+            conexao = BancoDadosUtil.getConnection();
+            comando = conexao.prepareStatement(SQL_VALIDAR);
+            comando.setString(1, usuario.getLogin());
+
+            resultado = comando.executeQuery();
+            if (resultado.next()) {
+                return false;
+            } else {
+                return true;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
     public void criar(Usuario usuario) throws SQLException {
         PreparedStatement comando = null;
@@ -136,7 +157,7 @@ public class UsuarioDAO {
     }
 
     public void removerUsuario(int id) throws SQLException {
-             Connection conexao = null;
+        Connection conexao = null;
         PreparedStatement comando = null;
         ///id = 4;
         try {
@@ -160,7 +181,7 @@ public class UsuarioDAO {
         } finally {
             //Todo objeto que referencie o banco de dados deve ser fechado
             BancoDadosUtil.fecharChamadasBancoDados(conexao, comando);
-        } 
-    
+        }
+
     }
 }

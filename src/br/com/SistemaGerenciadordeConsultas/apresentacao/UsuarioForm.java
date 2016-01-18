@@ -157,16 +157,14 @@ public class UsuarioForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-        // TODO add your handling code here:
-         /*try { 
+        try {
             this.editarUsuario();
-            alterarUsuarioForm.setStatus(1);
         } catch (SQLException ex) {
             Logger.getLogger(AlterarUsuarioForm.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
-
+        }
     }//GEN-LAST:event_btnAlterarActionPerformed
-    /*private void editarUsuario() throws SQLException {
+
+    private void editarUsuario() throws SQLException {
 
         int linhaSelecionada = tblUsuario.getSelectedRow();
 
@@ -177,7 +175,7 @@ public class UsuarioForm extends javax.swing.JFrame {
                 alterarUsuarioForm.dispose();
             }
 
-            alterarUsuarioForm = new AlterarUsuarioForm(this, usuarioSelecionado);
+            alterarUsuarioForm = new AlterarUsuarioForm(usuarioSelecionado);
             alterarUsuarioForm.setVisible(true);
 
         } else {
@@ -188,7 +186,8 @@ public class UsuarioForm extends javax.swing.JFrame {
                     JOptionPane.INFORMATION_MESSAGE);
         }
 
-    }*/
+    }
+
     /**
      * @param args the command line arguments
      */

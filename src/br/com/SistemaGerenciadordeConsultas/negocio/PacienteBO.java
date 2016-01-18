@@ -22,6 +22,11 @@ public class PacienteBO {
         return pacienteDAO.buscarTodos();
     }
 
+    public List<Paciente> buscarTodosCpf(Paciente filtro) throws SQLException {
+        PacienteDAO pacienteDAO = new PacienteDAO();
+        return pacienteDAO.buscarTodosCpf(filtro);
+    }
+
     public void salvar(Paciente paciente) throws SQLException, CampoObrigatorioException {
         PacienteDAO pacinteDAO = new PacienteDAO();
         if (paciente.getNome().isEmpty() || paciente.getCpf().length() == 9 || paciente.getTelefone().length() == 9 || paciente.getEndereco().isEmpty() || paciente.getSexo().isEmpty()) {

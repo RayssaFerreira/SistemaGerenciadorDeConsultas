@@ -22,6 +22,7 @@ public class PacienteDAO {
     private static final String SQL_INSERT = "INSERT INTO PACIENTE(NOME,CPF,TELEFONE,ENDERECO,DATA_NASCIMENTO,SEXO) VALUES(?,?,?,?,?,?)";
     private static final String SQL_UPDATE = "UPDATE PACIENTE SET NOME=?, CPF=?, TELEFONE=?, ENDERECO=?, DATA_NASCIMENTO=?, SEXO=? WHERE ID=?";
     private static final String SQL_BUSCA_TODOS = "SELECT * FROM PACIENTE ORDER BY NOME";
+    private static final String SQL_BUSCA_TODOS_CPF = "SELECT * FROM PACIENTE WHERE CPF=? ORDER BY NOME";
 
     public void criar(Paciente paciente) throws SQLException {
         PreparedStatement comando = null;
@@ -82,6 +83,47 @@ public class PacienteDAO {
                 conexao.close();
             }
         }
+    }
+
+    public List<Paciente> buscarTodosCpf(Paciente filtro) throws SQLException {
+        List<Paciente> pacientes = new ArrayList<>();
+        Paciente paciente = null;
+        Connection conexao = null;
+        PreparedStatement comando = null;
+        ResultSet resultado = null;
+        PacienteDAO pacienteDAO = new PacienteDAO();
+        try {
+            conexao = BancoDadosUtil.getConnection();
+            comando = conexao.prepareStatement(SQL_BUSCA_TODOS_CPF);
+            comando.setString(1, filtro.getCpf());
+            resultado = comando.executeQuery();
+            while (resultado.next()) {
+                paciente = new Paciente();
+
+                paciente.setId(resultado.getInt(1));
+                paciente.setNome(resultado.getString(2));
+                paciente.setCpf(resultado.getString(3));
+                paciente.setTelefone(resultado.getString(4));
+                paciente.setEndereco(resultado.getString(5));
+                paciente.setData_nascimento(resultado.getDate(6));
+                paciente.setSexo(resultado.getString(7));
+                pacientes.add(paciente);
+            }
+
+        } catch (Exception e) {
+            if (conexao != null) {
+//                conexao.rollback();
+            }
+//            throw new RuntimeException();
+        } finally {
+            if (comando != null && !comando.isClosed()) {
+                comando.close();
+            }
+            if (conexao != null && !conexao.isClosed()) {
+                conexao.close();
+            }
+        }
+        return pacientes;
     }
 
     public List<Paciente> buscarTodos() throws SQLException {
