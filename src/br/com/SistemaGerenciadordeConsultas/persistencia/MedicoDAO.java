@@ -7,6 +7,7 @@ package br.com.SistemaGerenciadordeConsultas.persistencia;
 
 import br.com.SistemaGerenciadordeConsultas.entidade.Especialidade;
 import br.com.SistemaGerenciadordeConsultas.entidade.Medico;
+import br.com.SistemaGerenciadordeConsultas.entidade.Usuario;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,6 +25,29 @@ public class MedicoDAO {
     private static final String SQL_UPDATE = "UPDATE MEDICO SET NOME=?, CPF=?, CRM=?, ESPECIALIDADE=?, TELEFONE=?, ENDERECO=?, SEXO=? WHERE ID=?";
     private static final String SQL_BUSCA_TODOS = "SELECT * FROM MEDICO ORDER BY NOME";
     private static final String SQL_BUSCA_TODOS_FILTRO = "SELECT * FROM MEDICO WHERE NOME LIKE ? OR CPF LIKE ? ORDER BY NOME";
+    private static final String SQL_VALIDAR = "SELECT * FROM MEDICO WHERE NOME=? OR CPF=? OR CRM=?";
+
+    public boolean validar(Medico medico) {
+        PreparedStatement comando = null;
+        Connection conexao = null;
+        ResultSet resultado = null;
+        try {
+            conexao = BancoDadosUtil.getConnection();
+            comando = conexao.prepareStatement(SQL_VALIDAR);
+
+            comando.setString(1, medico.getNome());
+            comando.setString(2, medico.getCpf());
+            comando.setString(3, medico.getCrm());
+            resultado = comando.executeQuery();
+            if (resultado.next()) {
+                return false;
+            } else {
+                return true;
+            }
+        } catch (Exception e) {
+            return true;
+        }
+    }
 
     public void criar(Medico medico) throws SQLException {
         PreparedStatement comando = null;

@@ -7,6 +7,7 @@ package br.com.SistemaGerenciadordeConsultas.negocio;
 
 import br.com.SistemaGerenciadordeConsultas.entidade.Medico;
 import br.com.SistemaGerenciadordeConsultas.excecao.CampoObrigatorioException;
+import br.com.SistemaGerenciadordeConsultas.excecao.DadosInvalidoException;
 import br.com.SistemaGerenciadordeConsultas.persistencia.MedicoDAO;
 import java.sql.SQLException;
 import java.util.List;
@@ -30,11 +31,14 @@ public class MedicoBO {
         return medicoDAO.buscarTodos();
     }
 
-    public void salvar(Medico medico) throws SQLException, CampoObrigatorioException {
+    public void salvar(Medico medico) throws SQLException, CampoObrigatorioException, DadosInvalidoException {
         MedicoDAO medicoDAO = new MedicoDAO();
         if (medico.getNome().isEmpty() || medico.getCpf().length() == 9 || medico.getCrm().length() == 1 || medico.getTelefone().length() == 9
                 || medico.getEndereco().isEmpty() || medico.getSexo().isEmpty()) {
             throw new CampoObrigatorioException();
+        }
+        if (!medicoDAO.validar(medico)) {
+            throw new DadosInvalidoException();
         }
         medicoDAO.criar(medico);
     }

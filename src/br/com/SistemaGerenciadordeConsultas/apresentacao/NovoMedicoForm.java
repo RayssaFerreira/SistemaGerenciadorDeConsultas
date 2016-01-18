@@ -8,6 +8,7 @@ package br.com.SistemaGerenciadordeConsultas.apresentacao;
 import br.com.SistemaGerenciadordeConsultas.entidade.Especialidade;
 import br.com.SistemaGerenciadordeConsultas.entidade.Medico;
 import br.com.SistemaGerenciadordeConsultas.excecao.CampoObrigatorioException;
+import br.com.SistemaGerenciadordeConsultas.excecao.DadosInvalidoException;
 import br.com.SistemaGerenciadordeConsultas.negocio.EspecialidadeBO;
 import br.com.SistemaGerenciadordeConsultas.negocio.MedicoBO;
 import java.sql.SQLException;
@@ -226,7 +227,7 @@ public class NovoMedicoForm extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnVoltarActionPerformed
 
-    public void validaCampos() throws CampoObrigatorioException{
+    public void validaCampos() throws CampoObrigatorioException {
         String nome = txtNome.getText().trim();
         String crm = txtCrm.getText().trim();
         String cpf = txtCpf.getText().trim();
@@ -239,16 +240,16 @@ public class NovoMedicoForm extends javax.swing.JFrame {
         } else if (rdoM.isSelected()) {
             sexo = "M";
         }
-        
-        if(nome.isEmpty() || cpf.isEmpty() || telefone.isEmpty() || 
-                crm.isEmpty() || endereco.isEmpty() || sexo.isEmpty()){
-            throw  new CampoObrigatorioException("Prencher os campos obrigatórios");
+
+        if (nome.isEmpty() || cpf.isEmpty() || telefone.isEmpty()
+                || crm.isEmpty() || endereco.isEmpty() || sexo.isEmpty()) {
+            throw new CampoObrigatorioException("Prencher os campos obrigatórios");
         }
     }
 
-    
+
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        try {                                          
+        try {
             this.validaCampos();
             //Recupera Campos Tela
             String nome = txtNome.getText().trim();
@@ -275,15 +276,17 @@ public class NovoMedicoForm extends javax.swing.JFrame {
                 MedicoBO medicoBO = new MedicoBO();
                 medicoBO.salvar(medico);
                 JOptionPane.showMessageDialog(this, "Médico Cadastrado com Sucesso!", "Sucesso!", JOptionPane.INFORMATION_MESSAGE);
-                
+
                 carregarCmb();
                 this.limparCamposTela();
-                
+
             } catch (CampoObrigatorioException e) {
                 JOptionPane.showMessageDialog(this, "\"Preencha Todos os Campos para Cadastar Médico!\"!", "Erro!", JOptionPane.ERROR_MESSAGE);
+            } catch (DadosInvalidoException e) {
+                JOptionPane.showMessageDialog(this, "\"Dados Inválido!\"!", "Erro!", JOptionPane.ERROR_MESSAGE);
             } catch (SQLException ex) {
                 Logger.getLogger(NovoMedicoForm.class.getName()).log(Level.SEVERE, null, ex);
-            } 
+            }
         } catch (CampoObrigatorioException ex) {
             JOptionPane.showMessageDialog(this, "Preencha Todos os Campos para Cadastar Médico!", "Erro!", JOptionPane.ERROR_MESSAGE);
         }

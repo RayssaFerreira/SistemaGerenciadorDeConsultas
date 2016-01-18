@@ -5,6 +5,7 @@
  */
 package br.com.SistemaGerenciadordeConsultas.persistencia;
 
+import br.com.SistemaGerenciadordeConsultas.entidade.Medico;
 import br.com.SistemaGerenciadordeConsultas.entidade.Paciente;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,6 +24,27 @@ public class PacienteDAO {
     private static final String SQL_UPDATE = "UPDATE PACIENTE SET NOME=?, CPF=?, TELEFONE=?, ENDERECO=?, DATA_NASCIMENTO=?, SEXO=? WHERE ID=?";
     private static final String SQL_BUSCA_TODOS = "SELECT * FROM PACIENTE ORDER BY NOME";
     private static final String SQL_BUSCA_TODOS_CPF = "SELECT * FROM PACIENTE WHERE CPF=? ORDER BY NOME";
+    private static final String SQL_VALIDAR = "SELECT * FROM PACIENTE WHERE CPF=?";
+
+    public boolean validar(Paciente paciente) {
+        PreparedStatement comando = null;
+        Connection conexao = null;
+        ResultSet resultado = null;
+        try {
+            conexao = BancoDadosUtil.getConnection();
+            comando = conexao.prepareStatement(SQL_VALIDAR);
+
+            comando.setString(1, paciente.getCpf());
+            resultado = comando.executeQuery();
+            if (resultado.next()) {
+                return false;
+            } else {
+                return true;
+            }
+        } catch (Exception e) {
+            return true;
+        }
+    }
 
     public void criar(Paciente paciente) throws SQLException {
         PreparedStatement comando = null;

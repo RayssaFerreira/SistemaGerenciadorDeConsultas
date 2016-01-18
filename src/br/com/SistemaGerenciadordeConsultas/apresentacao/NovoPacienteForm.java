@@ -7,6 +7,7 @@ package br.com.SistemaGerenciadordeConsultas.apresentacao;
 
 import br.com.SistemaGerenciadordeConsultas.entidade.Paciente;
 import br.com.SistemaGerenciadordeConsultas.excecao.CampoObrigatorioException;
+import br.com.SistemaGerenciadordeConsultas.excecao.DadosInvalidoException;
 import br.com.SistemaGerenciadordeConsultas.negocio.ConverteData;
 import br.com.SistemaGerenciadordeConsultas.negocio.PacienteBO;
 import java.sql.SQLException;
@@ -246,6 +247,8 @@ public class NovoPacienteForm extends javax.swing.JFrame {
                 this.limparCamposTela();
             } catch (CampoObrigatorioException e) {
                 JOptionPane.showMessageDialog(this, "\"Preencha Todos os Campos para Cadastar Paciente!\"", "Erro!", JOptionPane.ERROR_MESSAGE);
+            } catch (DadosInvalidoException e) {
+                JOptionPane.showMessageDialog(this, "\"Dados Inválido!\"", "Erro!", JOptionPane.ERROR_MESSAGE);
             } catch (ParseException e) {
                 JOptionPane.showMessageDialog(this, "Data de Nascimento Inválida!", "Erro!", JOptionPane.ERROR_MESSAGE);
             } catch (SQLException ex) {
